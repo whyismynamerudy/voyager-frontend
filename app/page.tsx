@@ -41,7 +41,7 @@ export default function Home() {
     <main className="relative h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50 text-white font-sans">
       <Meteors number={30} />
       <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase mb-8 text-center font-mono italic text-neutral-700 z-10">VOYAGER</h1>
-      <h5 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-center mb-8 text-neutral-700 z-10 top-0">Find internships the moment they're posted.</h5>
+      <h5 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-center mb-8 text-neutral-700 z-10 top-0">Find internships the moment they&apos;re posted.</h5>
       <div className="flex items-center z-10 space-x-4">
         <input
           type="email"
