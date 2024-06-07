@@ -40,7 +40,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: JSON.stringify({ email })
+        body: new URLSearchParams({ email })
       });
 
       if (response.ok) {
