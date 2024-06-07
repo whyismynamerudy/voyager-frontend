@@ -22,7 +22,7 @@ export default function Home() {
   const handleButtonClick = () => {
     if (validateEmail(email)) {
       setError("");
-      callFunction();
+      sendWelcomeEmail(email);
     } else {
       setError("Please enter a valid email address.");
     }
@@ -33,8 +33,28 @@ export default function Home() {
     return re.test(email);
   };
 
-  const callFunction = () => {
-    console.log("Function called");
+  const sendWelcomeEmail = async (email: string) => {
+    try {
+      const response = await fetch("https://voyager-backend.vercel.app/send/welcome", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+      });
+
+      if (response.ok) {
+        const result = await response.text();
+        console.log(result);
+        alert("Message sent successfully!");
+      } else {
+        const errorText = await response.text();
+        setError(`Error: ${errorText}`);
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setError("An error occurred while sending the email.");
+    }
   };
 
   return (
