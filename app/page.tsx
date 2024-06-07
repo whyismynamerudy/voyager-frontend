@@ -38,7 +38,7 @@ export default function Home() {
       const response = await fetch("https://voyager-backend.vercel.app/send/welcome", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/x-www-form-urlencoded"
         },
         body: JSON.stringify({ email })
       });
