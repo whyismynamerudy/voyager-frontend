@@ -19,12 +19,42 @@ export default function Home() {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState("");
 
+  const event = ({ action, category, label, value }: any) => {
+    (window as any).gtag('event', action, {
+      event_category: category,
+      event_label: label,
+      value: value,
+    });
+  };
+
   const handleButtonClick = () => {
+
+    event({
+      action: 'submit_email',
+      category: 'submission',
+      label: 'Submitted email to be notified',
+      value: 'Email Submitted',
+    });
+
     if (validateEmail(email)) {
       setError("");
       sendWelcomeEmail(email);
+
+      event({
+        action: 'accept_email',
+        category: 'submission',
+        label: 'Email accepted by backend',
+        value: 'Email Accepted',
+      });
+
     } else {
       setError("Please enter a valid email address.");
+      event({
+        action: 'deny_email',
+        category: 'submission',
+        label: 'Email denied by backend',
+        value: 'Email Denied',
+      });
     }
   };
 
