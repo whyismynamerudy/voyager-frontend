@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Meteors from "@/components/magucui/meteors";
+import axios from "axios";
 
 const Footer = () => {
   return (
@@ -18,8 +19,22 @@ const Footer = () => {
 export default function Home() {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState("");
+  const [websites, setWebsites] = useState<string[]>([]);
 
-  const event = ({ action, category, label, value }: any) => {
+  useEffect(() => {
+    const fetchWebsites = async () => {
+      try {
+        const response = await axios.get("https://voyager-backend.vercel.app/send/get-all-websites");
+        setWebsites(response.data);
+      } catch (error) {
+        console.error("Error fetching websites:", error);
+      }
+    };
+
+    fetchWebsites();
+  }, []);
+
+  const event = ({ action, category, label, value }: any) => { 
     (window as any).gtag('event', action, {
       event_category: category,
       event_label: label,
@@ -88,7 +103,7 @@ export default function Home() {
   };
 
   return (
-    <main className="relative h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50 text-white font-sans">
+    <main className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50 text-white font-sans">
       <Meteors number={30} />
       <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold uppercase mb-8 text-center font-mono italic text-neutral-700 z-10">VOYAGER</h1>
       <h5 className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-center mb-8 text-neutral-700 z-10 top-0">Find jobs you care about.</h5>
@@ -108,6 +123,16 @@ export default function Home() {
         </button>
       </div>
       {error && <p className="text-red-500 z-10">{error}</p>}
+      <div className="mt-8 z-10 w-full max-w-4xl">
+        <h3 className="text-xl mb-4 text-neutral-700 text-center">Currently Tracking: </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {websites.map((website, index) => (
+            <div key={index} className="bg-white text-gray-800 p-4 rounded-md shadow-md justify-center text-center">
+              {website}
+            </div>
+          ))}
+        </div>
+      </ div>
       <Footer />
     </main>
   );
