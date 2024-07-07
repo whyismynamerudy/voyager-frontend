@@ -19,7 +19,8 @@ const Footer = () => {
 export default function Home() {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState("");
-  const [websites, setWebsites] = useState<string[]>([]);
+  // const [websites, setWebsites] = useState<string[]>([]);
+  const [websites, setWebsites] = useState<{name: string, url: string}[]>([]);
 
   useEffect(() => {
     const fetchWebsites = async () => {
@@ -128,7 +129,8 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {websites.map((website, index) => (
             <div key={index} className="bg-white text-gray-800 p-4 rounded-md shadow-md justify-center text-center">
-              {website}
+              {/* {website} */}
+              <a href={website.url} target="_blank" rel="noopener noreferrer" className="underline">{website.name}</a>
             </div>
           ))}
         </div>
