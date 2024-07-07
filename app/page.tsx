@@ -15,18 +15,21 @@ const Footer = () => {
   );
 };
 
-
 export default function Home() {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState("");
-  // const [websites, setWebsites] = useState<string[]>([]);
-  const [websites, setWebsites] = useState<{name: string, url: string}[]>([]);
+  const [websites, setWebsites] = useState<{ name: string; url: string }[]>([]);
 
   useEffect(() => {
     const fetchWebsites = async () => {
       try {
-        const response = await axios.get("https://voyager-backend.vercel.app/send/get-all-websites");
-        setWebsites(response.data);
+        const response = await axios.get("https://voyager-ba586-default-rtdb.firebaseio.com/websites.json");
+        const data = response.data;
+        const formattedWebsites = Object.values(data).map((item: any) => ({
+          name: item.name,
+          url: item.url,
+        }));
+        setWebsites(formattedWebsites);
       } catch (error) {
         console.error("Error fetching websites:", error);
       }
@@ -35,7 +38,7 @@ export default function Home() {
     fetchWebsites();
   }, []);
 
-  const event = ({ action, category, label, value }: any) => { 
+  const event = ({ action, category, label, value }: any) => {
     (window as any).gtag('event', action, {
       event_category: category,
       event_label: label,
@@ -44,7 +47,6 @@ export default function Home() {
   };
 
   const handleButtonClick = () => {
-
     event({
       action: 'submit_email',
       category: 'submission',
@@ -62,7 +64,6 @@ export default function Home() {
         label: 'Email accepted by backend',
         value: 'Email Accepted',
       });
-
     } else {
       setError("Please enter a valid email address.");
       event({
@@ -128,15 +129,13 @@ export default function Home() {
         <h3 className="text-xl mb-4 text-neutral-700 text-center">Currently Tracking: </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {websites.map((website, index) => (
-            <div key={index} className="bg-white text-gray-800 p-4 rounded-md shadow-md justify-center text-center">
-              {/* {website} */}
-              <a href={website.url} target="_blank" rel="noopener noreferrer" className="underline">{website.name}</a>
-            </div>
+            <a key={index} href={website.url} target="_blank" rel="noopener noreferrer" className="bg-white text-gray-800 p-4 rounded-md shadow-md justify-center text-center hover:underline">
+              {website.name}
+            </a>
           ))}
         </div>
-      </ div>
+      </div>
       <Footer />
     </main>
   );
 }
-
